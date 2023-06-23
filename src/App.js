@@ -1,24 +1,64 @@
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+import NowPlaying from './NowPlaying'
+import Login from './Login'
 import './App.css';
+import Queue from './Queue';
 
 function App() {
+
+  const [token, setToken] = useState('');
+  const [tracklist, setTracklist] = useState([]);
+  const [current_track, setTrack] = useState();
+  const [status, setStatus] = useState();
+  const [time, setTime] = useState(new Date());
+
+  useEffect(() => {
+
+    async function getToken() {
+      const response = await fetch('/auth/token');
+      const json = await response.json();
+      setToken(json.access_token);
+    }
+
+    async function getTracks() {
+      const response = await fetch("https://api.spotify.com/v1/me/player/queue",
+        { method: "GET", headers: { Authorization: `Bearer ${token}` } })
+
+      const tracks = await response.json();
+
+      setTracklist(tracks.queue?.splice(0,10))
+      setTrack(tracks.currently_playing)
+    }
+
+    async function getPlaybackStatus() {
+      const response = await fetch("https://api.spotify.com/v1/me/player",
+        { method: "GET", headers: { Authorization: `Bearer ${token}` } })
+
+      const status = await response.json();
+      setStatus(status)
+    }
+
+    getToken();
+    getTracks();
+    getPlaybackStatus();
+    
+    const interval = setInterval(() => {
+      setTime(new Date());
+    },2000);
+
+    return () => clearInterval(interval);
+
+  }, [token, time]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {(token === '') ? <Login /> :
+        <>
+          < NowPlaying track={current_track} status={status} />
+          <Queue queue={tracklist} />
+        </>
+      }
+    </>
   );
 }
 
