@@ -2,6 +2,7 @@
   --inset-shadow: 0px 1px 30px -4px rgba(0,0,0,0.43) inset;
   --shadow: 9px 10px 13px -1px rgba(0,0,0,0.57);
   --sp-green: #1DB954
+  --temp: 10px 10px 151px 99px rgba(0,0,0,0.75) inset;
 }
 
 
@@ -16,9 +17,10 @@ body{
   justify-content: center;
   align-items: center;
   margin: auto;
-  margin-top: 5%;
-  height: 1060px;
-  background-color: white
+  height: 1080px;
+  background-color: white;
+  background-image: url('../public/L.jpg');
+  background-size: auto;
 }
 
 h1{
@@ -30,7 +32,7 @@ section {
   margin-left: 5%;
   margin-right: 5%;
   width: 50%;
-  background-color: #F0EAD6;
+  /* background-color: #F0EAD6; */
   border-radius: 2%;
   padding: 2%;
   box-shadow: var(--inset-shadow)
@@ -83,13 +85,15 @@ h2 {
 .queue-track {
   display: flex;
   flex-direction: row;
-  border-width: 3px;
-  border-style: solid
+  margin: 2%;
 }
 
 .queue-track > img {
-  width: 64px;
+  max-width: 64px;
   height: 64px;
+  margin: 1%;
+  margin-right: 3%;
+  flex: 1;
 }
 
 h5{
@@ -97,12 +101,20 @@ h5{
 }
 
 .queue-track-info{
-  flex: 3
+  flex: 3;
+  flex-direction: column;
+  align-items: baseline;
+  padding-top: 2%;
 }
 
 .queue-artists{
   display: flex;
   flex-direction: row;
   margin: 0;
-  list-style-type: none;
+}
+.queue-artists > p{
+  margin-top: 0;
+  margin-right: 2%;
+  padding: 1%;
+  text-overflow: ellipsis;    
 }

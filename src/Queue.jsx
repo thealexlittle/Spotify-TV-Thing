@@ -44,20 +44,21 @@ const track = {
 const artist = { name: "" }
 
 function QueuedTrack(props) {
-
+    var url = props.track?.album.images ? props.track?.album.images[0].url : "";
+    console.log(props.track)
     return (
         <>
             <div className="queue-track">
-                <img className="queue-art" src={props.track.album.images[0].url} alt="" />
+                <img className="queue-art" src={url} alt="" />
                 <div className="queue-track-info">
                     <h5>{props.track.name}</h5>
-                    <ul className='queue-artists'>
+                    <div className='queue-artists'>
                         {
-                            props.track.artists.map((artist, i) => (
-                                <li key={i}>{artist.name}</li>
+                            props.track?.artists.map((artist, i) => (
+                                <p key={i}>{artist.name}</p>
                             ))
                         }
-                    </ul>
+                    </div>
                 </div>
             </div>
         </>

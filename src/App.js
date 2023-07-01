@@ -35,16 +35,19 @@ function App() {
         { method: "GET", headers: { Authorization: `Bearer ${token}` } })
 
       const status = await response.json();
+      console.log(response);
       setStatus(status)
     }
 
     getToken();
     getTracks();
-    getPlaybackStatus();
+    getPlaybackStatus().catch(e => {
+      console.log(e);
+    });
     
     const interval = setInterval(() => {
       setTime(new Date());
-    },2000);
+    },1000);
 
     return () => clearInterval(interval);
 
@@ -52,9 +55,9 @@ function App() {
 
   return (
     <>
-      {(token === '') ? <Login /> :
+      {(token === '' || status === undefined) ? <Login /> :
         <>
-          < NowPlaying track={current_track} status={status} />
+          <NowPlaying track={current_track} status={status} />
           <Queue queue={tracklist} />
         </>
       }
