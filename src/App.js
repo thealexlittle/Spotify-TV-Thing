@@ -15,39 +15,46 @@ function App() {
   useEffect(() => {
 
     async function getToken() {
-      const response = await fetch('/auth/token');
-      const json = await response.json();
-      setToken(json.access_token);
+      try {
+        const response = await fetch('/auth/token');
+        const json = await response.json();
+        setToken(json.access_token);
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     async function getTracks() {
-      const response = await fetch("https://api.spotify.com/v1/me/player/queue",
-        { method: "GET", headers: { Authorization: `Bearer ${token}` } })
+      try {
+        const response = await fetch("https://api.spotify.com/v1/me/player/queue",
+          { method: "GET", headers: { Authorization: `Bearer ${token}` } })
 
-      const tracks = await response.json();
-
-      setTracklist(tracks.queue?.splice(0,10))
-      setTrack(tracks.currently_playing)
+        const tracks = await response.json();
+        setTracklist(tracks.queue?.splice(0, 10))
+        setTrack(tracks.currently_playing)
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     async function getPlaybackStatus() {
-      const response = await fetch("https://api.spotify.com/v1/me/player",
-        { method: "GET", headers: { Authorization: `Bearer ${token}` } })
-
-      const status = await response.json();
-      console.log(response);
-      setStatus(status)
+      try {
+        const response = await fetch("https://api.spotify.com/v1/me/player",
+          { method: "GET", headers: { Authorization: `Bearer ${token}` } })
+        const status = await response.json();
+        setStatus(status)
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     getToken();
     getTracks();
-    getPlaybackStatus().catch(e => {
-      console.log(e);
-    });
-    
+    getPlaybackStatus();
+
     const interval = setInterval(() => {
       setTime(new Date());
-    },1000);
+    }, 2000);
 
     return () => clearInterval(interval);
 

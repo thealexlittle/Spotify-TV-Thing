@@ -1,5 +1,3 @@
-import React, { useState, useEffect, useCallback } from 'react';
-
 function NowPlaying(props) {
     return (
         <>
